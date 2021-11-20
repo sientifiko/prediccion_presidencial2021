@@ -6,8 +6,6 @@ theme_set(theme_classic())
 
 data <- readxl::read_xlsx("Predicción Electoral.xlsx")
 
-
-
 data %>%
   gather("candidato", "perc", 1:7) -> data
 
@@ -44,7 +42,7 @@ data %>%
   labs(x="",
        y="",
        title = "Porcentaje promedio estimado por candidato",
-       subtitle = "n = 129")
+       subtitle = "n = 134")
 
 
 data %>%
@@ -63,12 +61,8 @@ data %>%
   labs(x="",
        y="",
        fill = "",
-       title = "Porcentaje promedio estimado por candidato por tendencia política",
-       subtitle = "n= 127")
+       title = "Porcentaje promedio estimado por candidato por tendencia política")
 
-sum(!is.na(data$tendpol))
-
-!is.na(data$tendpol)
 
 data %>%
   na.omit() %>%
@@ -86,8 +80,7 @@ data %>%
   labs(x="",
        y="",
        fill = "",
-       title = "Porcentaje promedio estimado por candidato por nivel socioeconómico",
-       subtitle = "n = 127")
+       title = "Porcentaje promedio estimado por candidato por nivel socioeconómico")
 
 
 data %>%
@@ -113,16 +106,6 @@ data %>%
 
 data$Comuna <- toupper(data$Comuna)
 data$Comuna2 <- iconv(data$Comuna, to="ASCII//TRANSLIT", from = "UTF-8")
-
-data %>%
-  na.omit() %>%
-  group_by(Comuna2) %>%
-  mutate(n = n()) %>%
-  filter(n >= 35) %>%
-  group_by(Comuna2, candidato) %>%
-  summarise(avg = mean(perc/100),
-            sd = sd(perc/100),
-            n = n()) 
 
 
 data %>%
@@ -163,7 +146,6 @@ data %>%
   labs(x="",
        y="N",
        title = "Cantidad de gente por nivel socioecon")
-
 
 
 
