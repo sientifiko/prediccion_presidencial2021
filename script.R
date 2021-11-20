@@ -4,9 +4,9 @@ library(tidyverse)
 options(scipen = 999)
 theme_set(theme_classic())
 
-data <- readxl::read_xlsx("Predicción Electoral.xlsx")
+df <- readxl::read_xlsx("Predicción Electoral.xlsx")
 
-data %>%
+df %>%
   gather("candidato", "perc", 1:7) -> data
 
 colnames(data)[c(3, 4)] <- c("tendpol", "ses")
@@ -104,11 +104,12 @@ data %>%
 
 
 
-data$Comuna <- toupper(data$Comuna)
-data$Comuna2 <- iconv(data$Comuna, to="ASCII//TRANSLIT", from = "UTF-8")
+df$Comuna <- toupper(df$Comuna)
+df$Comuna2 <- iconv(df$Comuna, to="ASCII//TRANSLIT", from = "UTF-8")
 
 
-data %>%
+
+df %>%
   na.omit() %>%
   group_by(Comuna2) %>%
   count() %>%
@@ -121,12 +122,12 @@ data %>%
        y="N",
        title = "Cantidad de gente por comuna")
 
-data %>%
+df %>%
   na.omit() %>%
-  group_by(tendpol) %>%
+  group_by(`Tendencia política`) %>%
   count() %>%
   ggplot() +
-  aes(tendpol, n, fill = tendpol) +
+  aes(`Tendencia política`, n, fill = `Tendencia política`) +
   guides(fill = "none") +
   geom_col() +
   theme(axis.text.x = element_text(angle = 90, hjust = 1, vjust = .5)) +
@@ -134,12 +135,12 @@ data %>%
        y="N",
        title = "Cantidad de gente por tendencia")
 
-data %>%
+df %>%
   na.omit() %>%
-  group_by(ses) %>%
+  group_by(`Autopercepción socioeconómica`) %>%
   count() %>%
   ggplot() +
-  aes(ses, n, fill = ses) +
+  aes(`Autopercepción socioeconómica`, n, fill = `Autopercepción socioeconómica`) +
   guides(fill = "none") +
   geom_col() +
   theme(axis.text.x = element_text(angle = 90, hjust = 1, vjust = .5)) +
